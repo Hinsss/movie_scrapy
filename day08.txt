@@ -1,0 +1,60 @@
+day08-爬虫8
+
+1、scrapy初认识
+	scrapy是什么？
+		是Python的一个爬虫框架，非常出名、非常强悍，你是框架，学的就是用法，当然，底层肯定使用了多进程、多线程、队列等技术
+	安装：pip install scrapy
+	框架的介绍
+		框架有5部分组成
+		引擎、下载器、spiders、调度器（schedule）、管道（pipeline）
+		我们的代码写到spiders、管道中，spiders里面我们要实现文件内容解析，链接提取，管道：数据是保存到文件中、mysql中、MongoDB中？
+	工作原理：见图形
+	简单使用：
+		（1）创建项目
+			scrapy startproject firstblood
+		（2）认识目录结构
+			firstblood
+				firstblood           真正的项目文件
+					__pycache__      缓存文件
+					spiders          爬虫文件存放的地方
+						__pycache__
+						__init__.py
+						lala.py      爬虫文件（*）
+					__init__.py      包的标志
+					items.py         定义数据结构的地方（*）
+					middlewares.py   中间件
+					pipelines.py     管道文件（*）
+					settings.py      配置文件（*）
+				scrapy.cfg           不用管
+		（3）生成爬虫文件
+			cd firstblood
+			scrapy genspider qiubai www.qiushibaike.com
+			name: 爬虫名字
+			allowed_domains: 允许的域名
+			start_urls: 起始url
+			parse: 自动回调的解析内容函数
+		（4）认识response对象
+			程序跑起来：
+				cd firstblood/firstblood/spiders
+				scrapy crawl qiubai
+				(问题1)pywin32安装一下，注意版本
+				(问题2)取消遵从robots协议
+					settings.py中第22行
+				(问题3)修改UA头部信息
+					settings.py中第19行
+			response的常用方法和属性
+				text: 字符串类型
+				body: 字节类型
+				xpath(): scrapy内部已经集成了xpath，直接使用即可，此xpath非彼xpath，略有不同
+		（5）执行输出指定格式
+			scrapy crawl qiubai -o qiubai.json
+			scrapy crawl qiubai -o qiubai.xml
+			scrapy crawl qiubai -o qiubai.csv
+			【注】你输出为csv的时候，中间估计有空行，自己百度一下解决掉即可
+2、scrapy shell
+	response
+		属性
+		方法
+	selector对象
+	item对象
+3、yield item和请求
